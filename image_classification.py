@@ -89,7 +89,7 @@ if __name__ == '__main__':
     # loop over the input images
     for imagePath in imagePaths:
         # load the image, pre-process it, and store it in the data list
-        image = cv2.imread(imagePath)
+        image = cv2.imread(args["dataset"] + "/" + imagePath)
         image = cv2.resize(image, (DIM, DIM))
         image = img_to_array(image)
         data.append(image)
