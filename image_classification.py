@@ -72,7 +72,9 @@ if __name__ == '__main__':
     # and batch size
     EPOCHS = 25
     INIT_LR = 1e-3
-    BS = 32
+    # BS = 32
+    BS = 2
+    DIM = 256
 
     # initialize the data and labels
     print("[INFO] loading images...")
@@ -80,7 +82,7 @@ if __name__ == '__main__':
     labels = []
 
     # grab the image paths and randomly shuffle them
-    imagePaths = sorted(list(paths.list_images(args["dataset"])))
+    imagePaths = sorted(list(os.listdir(args["dataset"])))
     random.seed(42)
     random.shuffle(imagePaths)
 
@@ -88,7 +90,7 @@ if __name__ == '__main__':
     for imagePath in imagePaths:
         # load the image, pre-process it, and store it in the data list
         image = cv2.imread(imagePath)
-        image = cv2.resize(image, (28, 28))
+        image = cv2.resize(image, (DIM, DIM))
         image = img_to_array(image)
         data.append(image)
 
@@ -116,7 +118,7 @@ if __name__ == '__main__':
                              horizontal_flip=True, fill_mode="nearest")
     # initialize the model
     print("[INFO] compiling model...")
-    model = NNModel.build(width=28, height=28, depth=3, classes=2)
+    model = NNModel.build(width=DIM, height=DIM, depth=3, classes=2)
     opt = Adam(lr=INIT_LR, decay=INIT_LR / EPOCHS)
     model.compile(loss="binary_crossentropy", optimizer=opt,
                   metrics=["accuracy"])
